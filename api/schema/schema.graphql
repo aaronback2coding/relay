@@ -1,0 +1,52 @@
+schema {
+  query: RootQuery
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Quote {
+  id: String
+  text: String
+  author: String
+}
+
+"""A connection to a list of items."""
+type QuoteConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [QuoteEdge]
+}
+
+"""An edge in a connection."""
+type QuoteEdge {
+  """The item at the end of the edge"""
+  node: Quote
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type QuotesLibrary {
+  """A list of the quotes in the database"""
+  quotesConnection(after: String, first: Int, before: String, last: Int): QuoteConnection
+}
+
+type RootQuery {
+  """The Quotes Library"""
+  quotesLibrary: QuotesLibrary
+}

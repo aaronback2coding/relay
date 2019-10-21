@@ -1,0 +1,176 @@
+---------------------------------
+database
+---------------------------------
+mongod -dbpath ./data/db
+db.users.count()
+db.getName();
+> db.createCollection("Quotes")
+{ "ok" : 1 }
+> db.Quotes.insertOne({text: "First Quote", author: "Aaron"})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("5dac090c66729b224419ed03")
+}
+> db.Quotes.insertOne({text: "Second  Quote", author: "Zachary"})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("5dac091a66729b224419ed04")
+}
+> db.Quotes
+test.Quotes
+> db.Quotes.count()
+
+
+---------------------------------
+graphql
+---------------------------------
+
+query
+{
+  allQuotes 
+  {
+    id,
+    text,
+    author
+  }
+}
+
+{
+  "data": {
+    "allQuotes": [
+      {
+        "id": "5dabeb7b477d8724b5fe755b",
+        "text": "first quote",
+        "author": "Aaron"
+      },
+      {
+        "id": "5dabeb88477d8724b5fe755c",
+        "text": "Second  quote",
+        "author": "Zachary"
+      },
+      {
+        "id": "5dabeb97477d8724b5fe755d",
+        "text": "Third  quote",
+        "author": "Xin"
+      }
+    ]
+  }
+}
+
+
+    fragment Quote on Quote {
+      id,
+      text,
+      author
+    }
+
+
+   
+fragment Quotelist on QuoteList {
+      alllQuotes {
+          ...Quote
+   }
+    }
+    
+query srcIndexQuery {
+            ...Quotelist
+}
+
+
+
+
+query srcIndexQuery {
+  quotesLibrary
+  {
+    allQuotes {
+      id
+      text
+      author
+    }
+  }
+}
+
+
+{
+  __type(name: "RootQuery") {
+    name
+    fields {
+      name
+      type {
+        name
+        kind
+      }
+    }
+  }
+}
+
+
+
+
+fragment quotesLibrary on QuotesLibrary {
+  allQuotes {
+    ...quote
+  }
+}
+
+query srcIndexQuery {
+  ...quotesLibrary
+}
+
+query srcIndexQuery {
+  quotesLibrary 
+  {	...lib}
+}
+
+fragment quote on Quote {
+  id
+  text
+  author
+}
+
+fragment lib on QuotesLibrary {
+    allQuotes {
+      ...quote
+    }
+}
+
+
+
+
+query srcIndexQuery {
+  quotesLibrary {
+    quotesConnection(last: 2) {
+      edges {
+        node {
+          id
+          text
+          author
+        }
+      }
+    }
+  }
+}
+
+
+
+
+query srcIndexQuery {
+  quotesLibrary 
+  {	...Quoteslib}
+}
+
+fragment quote on Quote {
+  id
+  text
+  author
+}
+
+fragment Quoteslib on QuotesLibrary {
+    quotesConnection {
+      edges {
+        node {
+          ...quote
+        }
+      }
+    }
+}

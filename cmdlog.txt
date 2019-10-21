@@ -1,0 +1,46 @@
+---------------------------------
+database
+---------------------------------
+mongod -dbpath ./data/db
+db.users.count()
+db.getName();
+> db.createCollection("Quotes")
+{ "ok" : 1 }
+> db.Quotes.insertOne({text: "First Quote", author: "Aaron"})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("5dac090c66729b224419ed03")
+}
+> db.Quotes.insertOne({text: "Second  Quote", author: "Zachary"})
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("5dac091a66729b224419ed04")
+}
+> db.Quotes
+test.Quotes
+> db.Quotes.count()
+
+
+---------------------------------
+graphql
+---------------------------------
+query srcIndexQuery($first: Int = 5) {
+  quotesLibrary 
+  {	...Quoteslib}
+}
+
+fragment quote on Quote {
+  id
+  text
+  author
+}
+
+fragment Quoteslib on QuotesLibrary {
+    quotesConnection(first: $first) {
+      edges {
+        node {
+          ...quote
+        }
+      }
+    }
+}

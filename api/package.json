@@ -10,11 +10,13 @@
   "license": "ISC",
   "proxy": "http://localhost:4000",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-graphql": "^0.9.0",
     "graphql": "^14.5.8",
     "graphql-relay": "^0.6.0",
-    "mongodb": "^3.3.3"
+    "mongodb": "^3.3.3",
+    "querystring": "^0.2.0"
   }
 }

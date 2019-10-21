@@ -8,28 +8,18 @@ class Quoteslist extends React.Component {
         console.log("quoteslist ", this.props.quoteslist.quotesConnection.edges);
         return (
             <div>
+                <button
+                    onPress={() => console.log("hello")}
+                    title="Load More"
+                />
                 {this.props.quoteslist.quotesConnection.edges.map(edge =>
                     <Quote key={edge.node.__id} quote={edge.node} />
                 )}
+
             </div>
         )
     }
 }
-
-
-
-// export default createFragmentContainer(Quoteslist, {
-//     quoteslist: graphql`
-//         fragment quoteslist_quoteslist on  QuotesLibrary{
-//             allQuotes {
-//                 ...quote_quote
-//             }
-//         }
-//     `,
-// });
-
-
-
 
 export default createFragmentContainer(Quoteslist, {
     quoteslist: graphql`
@@ -44,5 +34,8 @@ export default createFragmentContainer(Quoteslist, {
         }
     `,
 });
+
+
+
 
 

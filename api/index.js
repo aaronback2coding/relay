@@ -11,6 +11,8 @@ app.use(express.static('public'));
 
 var cors = require("cors");
 
+const bodyParser = require('body-parser')
+
 
 const mySchema = require('./schema/main');
 
@@ -22,11 +24,29 @@ MongoClient.connect(MONGO_URL, (err, client) => {
 
 
     var db = client.db('test');
+
+
+
+
+    app.use(bodyParser.json());
+    app.use('/graphql', (req, res, next) => {
+        const { query, variables } = req.body;
+        console.log(query);
+        console.log(variables);
+        let send = res.send;
+        res.send = function (body) {
+            console.log(body)
+            send.call(this, body);
+        }
+        next();
+    })
+
     app.use('/graphql', graphqlHTTP({
         schema: mySchema,
         context: { db },
         graphiql: true,
     }));
+
 
     app.listen(4000, () =>
         console.log('Running Express.js on port 4000')

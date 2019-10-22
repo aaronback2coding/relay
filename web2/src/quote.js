@@ -3,7 +3,6 @@ import { createFragmentContainer, graphql } from 'react-relay';
 
 class Quote extends React.Component {
     render() {
-        console.log("quote", this.props);
         return (
             <div className="notepaper">
                 <figure className="quote">

@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 4a49a45b9da112a24ccafd4ce2bd5bfb
+ * @relayHash ded2e06e3bd81f5b07e8436222dbc08a
  */
 
 /* eslint-disable */
@@ -10,24 +10,26 @@
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
 type quoteslist_quoteslist$ref = any;
-export type srcindexQueryVariables = {|
-  first?: ?number
+export type srcIndexQueryVariables = {|
+  count: number,
+  after?: ?string,
 |};
-export type srcindexQueryResponse = {|
+export type srcIndexQueryResponse = {|
   +quotesLibrary: ?{|
     +$fragmentRefs: quoteslist_quoteslist$ref
   |}
 |};
-export type srcindexQuery = {|
-  variables: srcindexQueryVariables,
-  response: srcindexQueryResponse,
+export type srcIndexQuery = {|
+  variables: srcIndexQueryVariables,
+  response: srcIndexQueryResponse,
 |};
 */
 
 
 /*
-query srcindexQuery(
-  $first: Int = 5
+query srcIndexQuery(
+  $count: Int!
+  $after: String
 ) {
   quotesLibrary {
     ...quoteslist_quoteslist
@@ -35,11 +37,17 @@ query srcindexQuery(
 }
 
 fragment quoteslist_quoteslist on QuotesLibrary {
-  quotesConnection(first: $first) {
+  quotesConnection(first: $count, after: $after) {
     edges {
       node {
         ...quote_quote
+        __typename
       }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
     }
   }
 }
@@ -55,16 +63,34 @@ const node/*: ConcreteRequest*/ = (function(){
 var v0 = [
   {
     "kind": "LocalArgument",
+    "name": "count",
+    "type": "Int!",
+    "defaultValue": null
+  },
+  {
+    "kind": "LocalArgument",
+    "name": "after",
+    "type": "String",
+    "defaultValue": null
+  }
+],
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "after"
+  },
+  {
+    "kind": "Variable",
     "name": "first",
-    "type": "Int",
-    "defaultValue": 5
+    "variableName": "count"
   }
 ];
 return {
   "kind": "Request",
   "fragment": {
     "kind": "Fragment",
-    "name": "srcindexQuery",
+    "name": "srcIndexQuery",
     "type": "RootQuery",
     "metadata": null,
     "argumentDefinitions": (v0/*: any*/),
@@ -89,7 +115,7 @@ return {
   },
   "operation": {
     "kind": "Operation",
-    "name": "srcindexQuery",
+    "name": "srcIndexQuery",
     "argumentDefinitions": (v0/*: any*/),
     "selections": [
       {
@@ -106,13 +132,7 @@ return {
             "alias": null,
             "name": "quotesConnection",
             "storageKey": null,
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "first",
-                "variableName": "first"
-              }
-            ],
+            "args": (v1/*: any*/),
             "concreteType": "QuoteConnection",
             "plural": false,
             "selections": [
@@ -154,12 +174,60 @@ return {
                         "name": "author",
                         "args": null,
                         "storageKey": null
+                      },
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "name": "__typename",
+                        "args": null,
+                        "storageKey": null
                       }
                     ]
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "cursor",
+                    "args": null,
+                    "storageKey": null
+                  }
+                ]
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "name": "pageInfo",
+                "storageKey": null,
+                "args": null,
+                "concreteType": "PageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "hasNextPage",
+                    "args": null,
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "name": "endCursor",
+                    "args": null,
+                    "storageKey": null
                   }
                 ]
               }
             ]
+          },
+          {
+            "kind": "LinkedHandle",
+            "alias": null,
+            "name": "quotesConnection",
+            "args": (v1/*: any*/),
+            "handle": "connection",
+            "key": "quoteslist_quotesConnection",
+            "filters": null
           }
         ]
       }
@@ -167,13 +235,13 @@ return {
   },
   "params": {
     "operationKind": "query",
-    "name": "srcindexQuery",
+    "name": "srcIndexQuery",
     "id": null,
-    "text": "query srcindexQuery(\n  $first: Int = 5\n) {\n  quotesLibrary {\n    ...quoteslist_quoteslist\n  }\n}\n\nfragment quoteslist_quoteslist on QuotesLibrary {\n  quotesConnection(first: $first) {\n    edges {\n      node {\n        ...quote_quote\n      }\n    }\n  }\n}\n\nfragment quote_quote on Quote {\n  id\n  text\n  author\n}\n",
+    "text": "query srcIndexQuery(\n  $count: Int!\n  $after: String\n) {\n  quotesLibrary {\n    ...quoteslist_quoteslist\n  }\n}\n\nfragment quoteslist_quoteslist on QuotesLibrary {\n  quotesConnection(first: $count, after: $after) {\n    edges {\n      node {\n        ...quote_quote\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n  }\n}\n\nfragment quote_quote on Quote {\n  id\n  text\n  author\n}\n",
     "metadata": {}
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'cde51a766b7104302283d8245ef18747';
+(node/*: any*/).hash = '02b784762c0a0674333fb3e99dbfb97f';
 module.exports = node;

@@ -18,7 +18,11 @@ export type quoteslist_quoteslist = {|
       +node: ?{|
         +$fragmentRefs: quote_quote$ref
       |}
-    |}>
+    |}>,
+    +pageInfo: {|
+      +hasNextPage: boolean,
+      +endCursor: ?string,
+    |},
   |},
   +$refType: quoteslist_quoteslist$ref,
 |};
@@ -34,27 +38,37 @@ const node/*: ReaderFragment*/ = {
   "kind": "Fragment",
   "name": "quoteslist_quoteslist",
   "type": "QuotesLibrary",
-  "metadata": null,
+  "metadata": {
+    "connection": [
+      {
+        "count": "count",
+        "cursor": "after",
+        "direction": "forward",
+        "path": [
+          "quotesConnection"
+        ]
+      }
+    ]
+  },
   "argumentDefinitions": [
     {
       "kind": "RootArgument",
-      "name": "first",
+      "name": "count",
       "type": "Int"
+    },
+    {
+      "kind": "RootArgument",
+      "name": "after",
+      "type": "String"
     }
   ],
   "selections": [
     {
       "kind": "LinkedField",
-      "alias": null,
-      "name": "quotesConnection",
+      "alias": "quotesConnection",
+      "name": "__quoteslist_quotesConnection_connection",
       "storageKey": null,
-      "args": [
-        {
-          "kind": "Variable",
-          "name": "first",
-          "variableName": "first"
-        }
-      ],
+      "args": null,
       "concreteType": "QuoteConnection",
       "plural": false,
       "selections": [
@@ -77,11 +91,50 @@ const node/*: ReaderFragment*/ = {
               "plural": false,
               "selections": [
                 {
+                  "kind": "ScalarField",
+                  "alias": null,
+                  "name": "__typename",
+                  "args": null,
+                  "storageKey": null
+                },
+                {
                   "kind": "FragmentSpread",
                   "name": "quote_quote",
                   "args": null
                 }
               ]
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "cursor",
+              "args": null,
+              "storageKey": null
+            }
+          ]
+        },
+        {
+          "kind": "LinkedField",
+          "alias": null,
+          "name": "pageInfo",
+          "storageKey": null,
+          "args": null,
+          "concreteType": "PageInfo",
+          "plural": false,
+          "selections": [
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "hasNextPage",
+              "args": null,
+              "storageKey": null
+            },
+            {
+              "kind": "ScalarField",
+              "alias": null,
+              "name": "endCursor",
+              "args": null,
+              "storageKey": null
             }
           ]
         }
@@ -90,5 +143,5 @@ const node/*: ReaderFragment*/ = {
   ]
 };
 // prettier-ignore
-(node/*: any*/).hash = '3cff4cbe7f565f2a5ab8c7d82b6dd59a';
+(node/*: any*/).hash = '1868c313a81e0f44a45b0bd8f996e36a';
 module.exports = node;
